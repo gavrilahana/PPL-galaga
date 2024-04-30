@@ -8,52 +8,46 @@ using UnityEngine;
 
 namespace Assets.Script.Enemy
 {
-    public class EnemyWave //Observer Pattern
+    public class EnemyWave : MonoBehaviour
     {
         private WaveType _waveType;
-        private List<GameObject> _enemies;
         private Vector3 _wavePosition;
+        private readonly List<GameObject> _enemies = new List<GameObject>();
+
         public EnemyWave(WaveType waveType, float defaultEnemyYPosition)
         {
             _wavePosition = new Vector3(0f, defaultEnemyYPosition);
-            _enemies = new List<GameObject>();
             _waveType = waveType;
         }
-        public Vector3 Position
-        {
-            get
-            {
-                return _wavePosition;
-            }
-        }
+
         public void RegisterEnemy(GameObject enemy)
         {
             _enemies.Add(enemy);
         }
-        public void Update()
+
+        void Update()
         {
             if (_waveType == WaveType.Down)
             {
-                GoDown();
-            }
-        }
-        public void DestroyWave()
-        {
-            foreach (GameObject gameObject in _enemies)
-            {                
-                if(gameObject != null)
-                    GameObject.Destroy(gameObject);
+                MoveDown();
             }
         }
 
-        private void GoDown()
+        private void MoveDown()
         {
-            _wavePosition.y -= -0.01f;
-            foreach (GameObject gameObject in _enemies)
+            _wavePosition.y -= 0.01f; 
+            transform.Translate(Vector3.down * 0.01f); 
+        }
+
+        public void DestroyWave()
+        {
+            foreach (GameObject enemy in _enemies)
             {
-                if(gameObject != null)
-                    gameObject.transform.Translate(new Vector3(0f, -0.01f));
+                if (enemy != null)
+                    Destroy(enemy);
             }
+            Destroy(gameObject); 
         }
     }
 }
+

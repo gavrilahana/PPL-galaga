@@ -9,14 +9,18 @@ namespace Assets.Script.Enemy
 {
     public class Enemy : MonoBehaviour
     {
-        void Update()
-        {
-            
-        }
         void OnTriggerEnter2D(Collider2D col)
         {
-            Destroy(col.gameObject);
-            Destroy(this.gameObject);
+            
+            Rigidbody2D rb = col.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+               
+                Destroy(col.gameObject);
+            }
+
+           
+            Destroy(gameObject);
         }
     }
 }
